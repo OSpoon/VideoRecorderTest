@@ -1,0 +1,807 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>投保书银保版</title>
+    <script type="text/javascript" src="../js/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/angular.js"></script>
+</head>
+<style>
+    h5 {margin-left : 4%;}
+    p{margin-left : 4%;}
+    td{border:solid #FF8000; border-width:0px 1px 1px 0px;}
+    table{border:solid #FF8000; border-width:1px 0px 0px 1px;}
+    input{
+        border: none;
+        font-size: 15px;
+        text-align: center;
+    }
+</style>
+<body ng-app="policy_YB">
+<div ng-controller="policy_YB_ctrl" id="policy_YB_ctrl1">
+<h2 align="center">人身保险投保书</h2>
+<h3 align="center">(银保专用)</h3>
+<h5>投保人信息栏</h5>
+<div align="center">
+    <table width="92%" border="1">
+        <tr style="width: 100%">
+            <td style="width: 10%"><div style="width: 100%" align="center">姓名</div></td>
+            <td style="width: 20%"><input style="width: 100%" type="text" ng-model="policyForElectron.applicant.name"></td>
+            <td style="width: 10%"><div style="width: 100%" align="center">性别</div></td>
+            <td style="width: 5%">
+                <input style="width:100%" type="text" ng-model="policyForElectron.applicant.sex"></td>
+            <td style="width: 10%"><div align="center">出生日期</div></td>
+            <td style="width: 15%"><input style="width: 100%" type="text" ng-model="policyForElectron.applicant.birthday"></td>
+            <td style="width: 5%"><div style="width: 100%;" align="center">国籍</div></td>
+            <td style="width: 15%">
+                <input style="width: 100%;" type="text" ng-model="policyForElectron.applicant.nationality">
+            </td>
+        </tr>
+        <tr>
+            <td><div align="center">证件类型</div></td>
+            <td colspan="3">
+                <input style="width: 100%" type="text" ng-model="policyForElectron.applicant.idType">
+            </td>
+            <td><div align="center">证件有效期限</div></td>
+            <td colspan="3">
+                <input style="width: 100%" type="text" ng-model="policyForElectron.applicant.idExpDate">
+            </td>
+        </tr>
+        <tr>
+            <td><div align="center">证件号码</div></td>
+            <td colspan="3"><input style="width:100%" type="text" ng-model="policyForElectron.applicant.idNo"></td>
+            <td><div align="center">婚姻状况</div></td>
+            <td colspan="3">
+                <input style="width: 100%" type="text" ng-model="policyForElectron.applicant.marriage">
+            </td>
+        </tr>
+        <tr>
+            <td height="19" colspan="5">与被保人关系：
+                <input name="checkbox3" type="checkbox" onclick="clickReadonly(this)" ng-model="relation33"/>
+                配偶
+                <input name="checkbox3" type="checkbox" onclick="clickReadonly(this)" ng-model="relation37"/>
+                父子
+                <input name="checkbox3" type="checkbox" onclick="clickReadonly(this)" ng-model="relation38"/>
+                父女
+                <input name="checkbox3" type="checkbox" onclick="clickReadonly(this)" ng-model="relation39"/>
+                母子
+                <input name="checkbox3" type="checkbox" onclick="clickReadonly(this)" ng-model="relation40"/>
+                母女
+                <input name="checkbox3" type="checkbox" onclick="clickReadonly(this)" ng-model="relationOther"/>
+                其他
+                <input type="text" name="Input2" value="" size="10" style="border:0px;border-bottom:#000000 1px solid;" readonly ng-model="relationDesc"/>
+            </td>
+            <td ><div style="width: 100%" align="center">居民类型：</div></td>
+            <td colspan="2">
+                <input style="width: 50%" type="text" ng-model="policyForElectron.applicant.residentType">
+            </td>
+        </tr>
+        <tr>
+            <td height="19"><div align="center">移动电话</div></td>
+            <td><input style="width: 100%;" type="text" ng-model="policyForElectron.applicant.mobile"></td>
+            <td><div >家庭电话</div></td>
+            <td colspan="2">
+                区号<input type="text" name="" value="" size="4" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.applicant.family_phone_area">
+                号码<input type="text" name="" value="" size="8" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.applicant.family_phone_number">
+            </td>
+            <td colspan="3" style="text-align: left">
+                电子邮箱:<input type="text" name="" value="" size="16" style="width: 70%;border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.applicant.email"><br/>
+                承保后各类信函将以电子邮件方式向您提供,请确保电子邮箱真实,有效。<br/>
+                如您选择纸质方式,请拨打我司客服热线95105698 进行申请。
+            </td>
+        </tr>
+        <tr>
+            <td><div align="center">联系地址</div></td>
+            <td colspan="5">
+                <input  type="text" ng-model="policyForElectron.applicant.address" style="width:100%;">
+            </td>
+            <td ><div align="center">邮政编码</div></td>
+            <td><input style="width: 100%;" type="text" ng-model="policyForElectron.applicant.postcode"></td>
+        </tr>
+        <tr>
+            <td><div align="center">工作单位</div></td>
+            <td colspan="4"><input type="text" style="width:100%;" ng-model="policyForElectron.applicant.companyAddress"></td>
+            <td><div align="center">单位电话</div></td>
+            <td colspan="2">
+                区号<input type="text" name="" value="" size="8" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.applicant.company_phone_area">
+                号码<input type="text" name="" value="" size="16" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.applicant.company_phone_number">	</td>
+        </tr>
+        <tr>
+            <td><div align="center">职业</div></td>
+            <td>
+                <!--<input type="text" style="width: 100%;padding-left: 1px;" ng-model="policyForElectron.applicant.occupationName">-->
+                {{policyForElectron.applicant.occupationName}}
+            </td>
+            <td><div align="center">职业类别</div></td>
+            <td><input type="text" style="width: 50%" ng-model="policyForElectron.applicant.occupationLevel" ><span ng-show="policyForElectron.applicant.occupationLevel">类</span></td>
+            <td><div align="center">职业代码</div></td>
+            <td><input style="width: 100%" type="text" ng-model="policyForElectron.applicant.occupationCode"></td>
+            <td colspan="2">
+                开户银行： <input type="text" name="Input" value="" size="16" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.insuredParticular.bankName" />      </td>
+        </tr>
+        <tr>
+            <td colspan="3">投保人年收入(人民币)：
+            <input type="text" name="" value="" size="8" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.applicant.yearIncome">
+            万元</td>
+            <td colspan="2">家庭年收入(人民币)：
+                <input type="text" name="" value="" size="8" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.applicant.familyYearIncome">
+                万元</td>
+            <td>投保人保费预算(人民币)：
+                <input type="text" name="" value="" size="8" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.applicant.holderPremiumBudget">
+                万元</td>
+            <td colspan="2">
+                账户：
+                <input type="text" name="Input" value="" size="16" style="border:0px;border-bottom:#000000 1px solid;width: 95%;" ng-model="policyForElectron.insuredParticular.bankCode"/>
+            </td>
+        </tr>
+    </table>
+</div>
+<h5>被保险人信息栏</h5>
+<div align="center">
+    <table width="92%" border="1">
+        <tr>
+            <td width="10%"><div align="center" style="width: 100%">姓名</div></td>
+            <td width="20%"><input style="width:100%" type="text" ng-model="policyForElectron.insured.name"></td>
+            <td width="10%"><div align="center">性别</div></td>
+            <td width="5%">
+                <input style="width: 100%" type="text" ng-model="policyForElectron.insured.sex">
+            </td>
+            <td width="10%"><div align="center">出生日期</div></td>
+            <td width="15%"><input style="width: 100%" type="text" ng-model="policyForElectron.insured.birthday"></td>
+            <td width="10%"><div align="center">国籍</div></td>
+            <td width="10%">
+                <input style="width: 100%" type="text" ng-model="policyForElectron.insured.nationality">
+            </td>
+        </tr>
+        <tr>
+            <td><div align="center">证件类型</div></td>
+            <td colspan="3">
+                <input style="width: 100%" type="text" ng-model="policyForElectron.insured.idType">
+            </td>
+            <td><div align="center">证件有效期限</div></td>
+            <td colspan="3">
+                <input style="width: 100%" type="text" ng-model="policyForElectron.insured.idExpDate">
+            </td>
+        </tr>
+        <tr>
+            <td><div align="center">证件号码</div></td>
+            <td colspan="3"><input style="width:100%" type="text" ng-model="policyForElectron.insured.idNo"></td>
+            <td><div align="center">婚姻状况</div></td>
+            <td colspan="3">
+                <input style="width:100%" type="text" ng-model="policyForElectron.insured.marriage">
+            </td>
+        <tr>
+            <td height="19"><div align="center">移动电话</div></td>
+            <td><input style="width: 100%" type="text" ng-model="policyForElectron.insured.mobile"></td>
+            <td><div align="center">家庭电话</div></td>
+            <td colspan="2">
+                区号<input type="text" name="" value="" size="5" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.insured.family_phone_area">
+                号码<input type="text" name="" value="" size="10" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.insured.family_phone_number">
+            </td>
+            <td colspan="3">
+                电子邮箱:<input type="text" name="" value="" size="16" style="width: 100%;border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.insured.email">
+                （请您填写，以便享受电邮服务）</td>
+        </tr>
+        <tr>
+            <td><div align="center">联系地址</div></td>
+            <td colspan="5">
+                <input type="text" ng-model="policyForElectron.insured.address" style="width:100%;">
+            </td>
+            <td><div align="center">邮政编码</div></td>
+            <td><input type="text" ng-model="policyForElectron.insured.postcode"></td>
+        </tr>
+        <tr>
+            <td ><div style="width: 100%" align="center">工作单位/就读学校：</div></td>
+            <td colspan="4"><input style="width: 100%;" type="text" ng-model="policyForElectron.insured.companyAddress"></td>
+            <td><div align="center">单位电话</div></td>
+            <td colspan="2">
+                区号<input type="text" name="" value="" size="8" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.insured.company_phone_area">
+                号码<input type="text" name="" value="" size="16" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.insured.company_phone_number">	</td>
+        </tr>
+        <tr>
+            <td><div align="center">职业</div></td>
+            <td>
+                <!--<input type="text" style="width: 100%;font-size: 12px;padding-left: 1px;" ng-model="policyForElectron.insured.occupationName">-->
+                {{policyForElectron.insured.occupationName}}
+            </td>
+            <td><div align="center">职业类别</div></td>
+            <td><input type="text" style="width: 50%;padding-left: 1px"  ng-model="policyForElectron.insured.occupationLevel"> <span ng-show="policyForElectron.insured.occupationLevel">类</span></td>
+            <td><div align="center">职业代码</div></td>
+            <td><input type="text" style="width: 100%" ng-model="policyForElectron.insured.occupationCode"></td>
+            <td colspan="2">
+                年收入(人民币)：<input type="text" name="" value="" size="8" style="width: 60%;border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.insured.yearIncome">
+                万元 </td>
+        </tr>
+    </table>
+    <p>&nbsp;</p>
+</div>
+<h5>身故保险金受益人信息栏</h5>
+<p>(建议您指定受益人,否则身故保险金将作为被保险人的遗产,申请理赔时,我司会要求索赔权利人提供合法继承人身份证明的法律<br/>
+    文件。建议您最好明确各受益人的受益顺位和受益比例,且同一顺位的受益比例之和应为100%,否则我司会按照所有指定受益人人<br/>
+    数以同一顺位相同比例分配受益权益。若身故保险金受益人超过3 人时，您可在备注栏中按以下内容进行说明。)</p>
+<div align="center">
+    <table width="92%" border="1">
+        <tr>
+            <td colspan="9">
+                所有被保险人的身故保险金受益人均为
+                <p ng-hide="policyForElectron.benefitMan.byLaw" style="display: inline-block;">指定受益人(如勾选,请详细填写其相关信息)</p>
+                <p ng-show="policyForElectron.benefitMan.byLaw" style="display: inline-block;">法定继承人</p>
+            </td>
+        </tr>
+        <tr>
+            <td width="7%"><div align="center">姓名</div></td>
+            <td><div align="center">性别</div></td>
+            <td><div align="center">出生日期</div></td>
+            <td><div align="center">证件类型</div></td>
+            <td width="19%"><div align="center">证件号码</div></td>
+            <td><div align="center">证件有效期</div></td>
+            <td><div align="center">与被保人关系</div></td>
+            <td width="11%"><div align="center">受益顺序</div></td>
+            <td><div align="center">收益比例</div></td>
+        </tr>
+        <tbody id="tabBenefitMan" align="center" ng-hide="policyForElectron.benefitMan.byLaw">
+        </tbody>
+    </table>
+</div>
+<h5>投保险种信息栏</h5>
+<div align="center">
+    <table width="92%" border="1">
+        <tr>
+            <td ><div align="center">险种</div></td>
+            <td width="26%" colspan="2"><div align="center">险种名称</div></td>
+            <td><div align="center">保险期间</div></td>
+            <td><div align="center">交费期限</div></td>
+            <td><div align="center">保险金额（元/份数）</div></td>
+            <td><div align="center">保险费（元）</div></td>
+        </tr>
+        <tbody id="tabProduct" align="center">
+        </tbody>
+        <tr>
+            <td colspan="7">
+                首期保险费合计(大写):人民币
+                <input type="text" ng-model="policyForElectron.insuredParticular.premiumSumUpper" style="width: 60%">
+                <br>(小写)￥
+                <input type="text" ng-model="policyForElectron.insuredParticular.premiumSumLower" style="width: 20%">
+                元	</td>
+        </tr>
+        <tr>
+            <td>1.交费频率</td>
+            <td colspan="6">
+                <input type="text" ng-model="policyForElectron.insuredParticular.products[0].paymode">
+        </tr>
+        <tr>
+            <td>2.自动续保</td>
+            <td colspan="6">
+                <div ng-hide="autoXubao_hide">
+                    如果您投保的险种主险可自动续保，请选择合同满期后是否申请自动续保（如未选择，默认为“否”）
+                    <input type="checkbox" onclick="clickReadonly(this)"/>是
+                    <input type="checkbox" onclick="clickReadonly(this)"/>否
+                </div>
+                <input type="text" ng-show="autoXubao_hide" ng-model="policyForElectron.insuredParticular.products[0].autoXubao">
+            </td>
+        </tr>
+        <tr>
+            <td> 3.红利领取方式</td>
+            <td colspan="6">
+                <div ng-hide="dividend_hide">
+                    如果您投保的险种中含分红险，请选择：
+                    <input type="checkbox" onclick="clickReadonly(this)"/>
+                    累积生息
+                    <input type="checkbox" onclick="clickReadonly(this)"/>
+                    现金红利
+                    <input type="checkbox" onclick="clickReadonly(this)"/>
+                    抵交保险费
+                    <input type="checkbox" onclick="clickReadonly(this)"/>
+                    购买增额交清保险
+                </div>
+                <input type="text" ng-model="policyForElectron.insuredParticular.dividend" ng-show="dividend_hide">
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="3">4.年金领取选择</td>
+            <td colspan="6">
+                年金领取年龄：
+                <div style="display: inline-block" ng-hide="drawAge_hide">
+                    <input type="checkbox" onclick="clickReadonly(this)"/>50岁
+                    <input type="checkbox" onclick="clickReadonly(this)"/>55岁
+                    <input type="checkbox" onclick="clickReadonly(this)"/>60岁
+                    <input type="checkbox" onclick="clickReadonly(this)"/>65岁
+                    <input type="checkbox" onclick="clickReadonly(this)"/>其他
+                    <input type="text" name="" value="" size="12" style="border:0px;border-bottom:#000000 1px solid;">
+                </div>
+                <input type="text" ng-model="policyForElectron.insuredParticular.drawAge" ng-show="drawAge_hide">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                年金领取频率：
+                <div style="display: inline-block" ng-hide="drawFreq_hide">
+                    <input type="checkbox" onclick="clickReadonly(this)"/>年领
+                    <input type="checkbox" onclick="clickReadonly(this)"/>月领
+                </div>
+                <input type="text" ng-model="policyForElectron.insuredParticular.drawFreq" ng-show="drawFreq_hide">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                年金领取方式：
+                <div style="display: inline-block" ng-hide="drawMode_hide">
+                    <input type="checkbox" onclick="clickReadonly(this)"/>一次性领取
+                    <input type="checkbox" onclick="clickReadonly(this)"/>终身领取
+                    <input type="checkbox" onclick="clickReadonly(this)"/>定期领取
+                    <input type="checkbox" onclick="clickReadonly(this)"/>定期保证领取
+                    <input type="checkbox" onclick="clickReadonly(this)"/>定期保证终身领取
+                    <input type="checkbox" onclick="clickReadonly(this)"/>其他	<input type="text" name="" value="" size="12" style="border:0px;border-bottom:#000000 1px solid;">
+                </div>
+                <input type="text" ng-model="policyForElectron.insuredParticular.drawMode" ng-show="drawMode_hide">
+            </td>
+        </tr>
+        <tr>
+            <td>5.满期金领取方式</td>
+            <td colspan="6">
+                <input type="checkbox" onclick="clickReadonly(this)"/>一次性领取<input type="checkbox" onclick="clickReadonly(this)"/>其他<input type="text" name="" value="" size="12" style="border:0px;border-bottom:#000000 1px solid;">	</td>
+        </tr>
+        <tr>
+            <td>6.逾期未付选择权</td>
+            <td colspan="6">
+                <div ng-hide="autoPay_hide">
+                    投保险种中如含保险费“自动垫交”功能，请填写（如未选择，默认为“合同中止”）：
+                    <input type="checkbox" onclick="clickReadonly(this)"/>合同中止
+                    <input type="checkbox" onclick="clickReadonly(this)"/>保险费自动垫交
+                </div>
+                <input type="text" ng-show="autoPay_hide" ng-model="autoPay">
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="3">7.投资连结保险填写</td>
+            <td width="13%"><div align="center">投资账户名称</div></td>
+            <td colspan="2">&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td><div align="center">投资所占比例</div></td>
+            <td colspan="2">&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                保费转入投资账户时间选择： <input type="checkbox" onclick="clickReadonly(this)"/>保险合同生效时进入
+                <input type="checkbox" onclick="clickReadonly(this)"/>犹豫期满后进入	</td>
+        </tr>
+    </table>
+</div>
+<h5>给付领取授权栏</h5>
+<div align="center">
+    <table width="92%" border="1">
+        <tr>
+            <td height="159">2. 被保险人账户</td>
+            <td>
+                若您投保的保险含有支付给被保险人的以生存为条件的款项，请填写以下信息：（如未选择，默认为“柜面领取”）<br/>
+                <input type="checkbox" onclick="clickReadonly(this)"/>柜面领取
+                <input type="checkbox" onclick="clickReadonly(this)"/>自动转账（如选择自动转账，请填写以下银行信息）<br/>
+                账户姓名:<input type="text" name="" value="" size="12" style="border:0px;border-bottom:#000000 1px solid;" >
+                <!--ng-model="policyForElectron.applicant.name"-->
+                开户银行：<input type="text" name="" value="" size="50" style="border:0px;border-bottom:#000000 1px solid;" ><br/>
+                <!--ng-model="policyForElectron.insuredParticular.bankName"-->
+                银行账号:<input type="text" name="" value="" size="70" style="border:0px;border-bottom:#000000 1px solid;" ><br/><br/>
+                <!--ng-model="policyForElectron.insuredParticular.bankCode"-->
+                1.上述银行账号的账户所有人为投保人本人,账户信息真实可靠。账户所有人授权光大永明人寿保险有限<br/>
+                公司（以下简称“本公司”）和开户银行将保险合同约定的应支付给被保险人以生存为条件的款项以自动转<br/>
+                账方式划入该账户。<br/>
+                2.如因该账户信息错误,账户注销或其他非本公司原因导致的转账不成功，由此所致本公司付费失败的任何<br/>
+                责任由被保险人本人承担。
+            </td>
+        </tr>
+    </table>
+</div>
+<h5>保险单健康告知事项</h5>
+<div align="center">
+    <table width="92%" border="1">
+        <tr>
+            <td width="72%"><div align="center">询问事项</div></td>
+            <td width="13%"><div align="center">被保险人</div></td>
+            <td width="15%"><div align="center">投保人</div></td>
+        </tr>
+        <tr>
+            <td>如保险条款中涉及对投保人承担保险责任事项，请同时填写“投保人”告知事项。</td>
+            <td><div align="center">是&nbsp;&nbsp;否</div></td>
+            <td><div align="center">是&nbsp;&nbsp;否</div></td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                1.被保险人：
+                身高<input type="text" name="" value="" size="12" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.policyInform.insuredHealthItemList[0].value[0]">厘米&nbsp;&nbsp;
+                体重<input type="text" name="" value="" size="12" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.policyInform.insuredHealthItemList[0].value[1]">公斤；
+                投保人：
+                身高<input type="text" name="" value="" size="12" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.policyInform.applicantHealthItemList[0].value[0]">厘米&nbsp;&nbsp;
+                体重<input type="text" name="" value="" size="12" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.policyInform.applicantHealthItemList[0].value[1]">公斤</td>
+        </tr>
+        <tr>
+            <td>2.被保险人是否有吸烟超过10 支/天或饮酒（相当于白酒）超过50 克/天?</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[1].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[1].answer == 2" onclick="clickReadonly(this)"/>
+            </div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[1].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[1].answer == 2" onclick="clickReadonly(this)"/>
+            </div></td>
+        </tr>
+        <tr>
+            <td>3.是否有其他寿险公司已生效或正在申请的保险单?是否有寿险公司理赔经历?是否曾被拒保延期,附加条件承保、限额承保,或未接受以上承保条件而撤销投保申请?</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[2].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[2].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[2].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[2].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+            <td>4.是否曾从事过滑翔飞行、私人飞行、驾驶航空机具、潜水、滑水、滑雪、登山、跳伞、马术、特技表演及<br/>
+                赛车活动?或现在正准备参加以上活动? </td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[3].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[3].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[3].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[3].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+            <td>5.近一年是否有出国工作或居住计划?</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[4].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[4].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[4].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[4].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+            <td>6.两年内是否曾体检而结果异常?是否接受或被建议用药、手术、住院等治疗(不包括感冒、流感、怀孕、分娩)?</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[5].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[5].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[5].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[5].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+            <td>7.是否患先天性或遗传相关因素疾病?</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[6].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[6].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[6].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[6].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+            <td>8.您是否目前患有或过去曾经患过下列症状,疾病或手术史:</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;a.脑、神经系统及精神方面疾病,如:帕金森氏病/综合征、阿尔兹海默氏症、重症肌无力、多发性硬化<br />、反
+                复头痛或眩晕、癫痫、脑血管畸形、脑梗塞、脑出血、短暂性脑缺血发作、脑血管意外、脑瘤、脑部<br />需要或
+                已经手术治疗的疾病、脊髓疾病、智力障碍、精神分裂症、神经官能症、抑郁症、神经衰弱、情感障<br />
+                碍、人格障碍、进食障碍;</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[7].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[7].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[7].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[7].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+
+        <tr>
+            <td>&nbsp;&nbsp;b.心血管的疾病，如：高血压（收缩压140mmHg以上或舒张压90mmHg 以上）、冠心病、心肌梗塞、心绞<br />
+                痛、心律失常、先天性心脏病、风湿性心脏病、心内膜炎、心肌病、甲亢性心脏病、室壁瘤、动脉瘤、心力<br />
+                衰竭，被建议进一步检查或治疗的心慌及胸闷、胸痛、原因不明的晕厥、心脏杂音、或被建议进行心导<br />
+                管等心血管介入治疗；</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[8].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[8].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[8].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[8].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+
+        <tr>
+            <td>&nbsp;&nbsp;c.呼吸系统疾病，如：反复咳嗽咳痰、咯血、气喘、呼吸困难、慢性支气管炎、肺气肿、肺心病、<br />哮喘、支气管
+                扩张、肺结核、尘肺、间质性肺病、肺纤维化、胸腔积液、呼吸衰竭；</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[9].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[9].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[9].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[9].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+
+        <tr>
+            <td>&nbsp;&nbsp;d.消化系统疾病,如:肝区疼痛、肝功能异常、黄疸、便血、食道静脉曲张、胃和/或十二指肠溃疡、<br />胰腺炎、
+                胰腺假性囊肿、肝炎、乙肝病毒携带、肝囊肿、多囊肝、肝硬化、肝血管瘤、肝内胆管炎、<br />胆结石、胆囊息
+                肉、脾肿大、慢性或溃疡性结肠炎、肠息肉、腹部外伤或手术史；</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[10].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[10].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[10].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[10].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;e.泌尿系统疾病,如:尿糖阳性、血尿、蛋白尿、反复尿路感染、尿路畸形、肾移植、肾积水、<br/>肾囊肿、多囊
+                肾、肾结石、尿毒症、肾病综合症、肾脏功能异常、急慢性肾炎、前列腺疾病、泌尿系统外伤或手术史；</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[11].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[11].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[11].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[11].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;f. 骨骼尧肌肉尧结缔组织的疾病袁如院关节红肿或酸痛尧类风湿关节炎尧强直性脊柱炎尧椎间盘突出尧股骨头
+                坏死尧骨关节炎尧肌营养不良症尧肌肉萎缩尧系统性红斑性狼疮尧干燥综合症曰</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[12].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[12].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[12].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[12].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;g.内分泌,血液系统疾病,如:血糖升高,糖尿病,痛风,高尿酸血症,高脂血症,甲状腺或甲状旁腺疾病,<br/>
+                脑垂体功能亢进,肾上腺功能亢进或低下,贫血,脾功能亢进,白血病,淋巴瘤,血友病,再生障碍性贫<br/>
+                血,紫癜,原因不明的发热,原因不明皮肤和粘膜及齿龈出血；</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[13].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[13].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[13].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[13].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;h.五官科疾病，如：原因不明的声音嘶哑，听力下降，耳鸣，复视，视力下降，美尼尔病，白内障，青光眼，视<br/>
+                神经病变,视网膜出血或剥离；</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[14].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[14].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[14].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[14].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;i.曾经或当前患有恶性肿瘤,原因不明的发热,体重明显变化(一年内增加或减少超过5 公斤)、原因不<br/>
+                明的淋巴结肿大、未证实为良性或恶性之肿瘤、肿块、息肉、囊肿、赘生物、结节、黑痣增大；</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[15].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[15].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[15].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[15].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+        <td> &nbsp;&nbsp;j.五官、脊柱、胸廓、四肢、手足畸形或残疾;</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[16].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[16].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[16].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[16].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;k.职业病、酒精中毒、吸毒、药物成瘾、化学品滥用、患艾滋病或感染艾滋病病毒?</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[17].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[17].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[17].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[17].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+            <td>9.您的父母、兄弟姐妹中有两人或以上在60 岁以前因病去世?</td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[18].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[18].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[18].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[18].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+            <td>
+                10.女性告知:是否怀孕?是否曾患子宫、卵巢等妇科疾病?是否曾有异常出血或下腹部手术(剖腹<br/>
+                产除外)、放射性治疗等?若已怀孕,请填写怀孕日期:
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[19].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[19].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[19].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[19].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+        <tr>
+            <td>
+                11.被保险人年龄在六周岁及以下时，请告知：<br/>
+                &nbsp;&nbsp;a.被保险人出生时是否早产小于34 周或体重低于2 公斤?
+                b.是否难产或有窒息史?	  </td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[20].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.insuredHealthItemList[20].answer == 2" onclick="clickReadonly(this)"/></div></td>
+            <td><div align="center">
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[20].answer == 1" onclick="clickReadonly(this)"/>
+                &nbsp;&nbsp;
+                <input type="checkbox" ng-checked="policyForElectron.policyInform.applicantHealthItemList[20].answer == 2" onclick="clickReadonly(this)"/></div></td>
+        </tr>
+    </table>
+</div>
+<h5>询问事项结果栏</h5>
+<p>若上述任一询问事项答案为"是"，请在询问事项旁对应处勾选，并在下栏中填写具体姓名，问题编号和说明。 </p>
+<div align="center">
+    <table width="92%" border="1">
+        <tr>
+            <td width="13%" height="37"><div align="center">姓名</div></td>
+            <td width="18%"><div align="center">问题编号</div></td>
+            <td width="69%"><div align="center">说明内容</div></td>
+        </tr>
+        <tbody id="healthDetailsTab" align="center">
+
+        </tbody>
+    </table>
+</div>
+<h5>投保人、被保险人/法定监护人申明栏</h5>
+<div align="center">
+    <table width="92%" border="1">
+        <tr>
+            <td>
+                1.贵公司及其业务人员已向本人提供所投保产品条款，并对产品条款，尤其是对免除责任条款、合同解除条款进行了详细解释和明确说明。<br/>
+                本人在投保前已认真阅读并理解所投保产品的条款、产品说明书、投保提示、投保须知，本人无异议并同意遵守。<br/>
+                2.本投保书、与投保书有关的各份问卷、体检报告书及对体检医生的各项声明与陈述均确实无误。若不属实，贵公司有权依法解除保险合<br/>
+                同，并对解除合同前所发生的保险事故均不承担保险责任。本人未授权保险代理人及其他任何人在任何情况下，对本人的书面告知及声<br/>
+                明进行修改。所有告知事项以书面为准，口头告知无效。<br/>
+                3.本人已明悉：临时保险单的生效条件、保险责任、责任免除、合同解除权和保险金额限制等内容。贵公司应负的保险责任自贵公司签发的<br/>
+                正式保险合同上所载明的日期开始。<br/>
+                4.本人已明悉：在被保险人成年之前，其死亡给付保险金额的总和不能超过保险监督管理机构规定的最高限额。<br/>
+                5.本人授权贵公司可以从任何单位、组织和个人就有关保险事宜查询、索取与投保人/被保险人有关的资料和证明，同时可将资料或证明提<br/>
+                供给相关单位。<br/>
+                6.本人认可并接受贵公司的定点医疗机构，如果被保险人因疾病或意外住院，愿到贵公司定点医疗机构就诊（抢救、急救除外），否则贵公司<br/>
+                可不承担任何保险金给付责任。<br/>
+                7.本人已认可贵公司从投保人账户划转需交纳的各期保险费，并将应支付给投保人的款项划入该账户。如因账户问题导致转账扣款或付费<br/>
+                失败造成损失袁由本人承担。<br/>
+                8.本人已明悉：保险合同有关资料（如联系方式、银行账户等）发生变化时，本人有义务及时通知贵公司，否则造成的损失由本人承担。<br/>
+                9.本人已明悉：选择了自动续保情况下，按合同条款中自动续保所需满足的条件，如贵公司审核后同意续保，收取保险费后保险合同持续有<br/>
+                效；如贵公司审核后不同意续保，不再收取保险费，保险合同满期终止。如本人决定终止自动续保，应向贵公司申请。<br/>
+                10.本人已明悉：选择了保险费自动垫交，在宽限期结束时若仍未交纳续期保险费，贵公司将以保险合同的现金价值净值自动垫交保险合同<br/>
+                及附加合同的续期保险费，保险合同继续有效，若现金价值净值不足以垫交全部到期保险费，则按当时本合同现金价值净值折算可垫交<br/>
+                的天数，自动垫交部分续期保险费。当现金价值净值为零时，本合同效力中止；如果您选择了合同中止，在宽限期结束时若您仍未交纳续<br/>
+                期保险费，本合同效力中止。<br/>
+                11.分红保险的分红利益、万能保险保证利益之上的收益与投资连接保险投资账户收益并不确定，请您详阅投保提示书第六条。按法规要<br/>
+                求 ，请投保人用正楷亲笔抄写：“本人已阅读保险条款、产品说明书和投保提示书，了解本产品的特点和保单利益的不确定性”。<br/>
+                <button id="applicantSign38Btn" type="button" onclick="applicantSign38()">签名</button>
+                <!--onclick="WebViewJavascriptBridge.sendMessage('signture_content_A');"-->
+                <div id="APPLICANT_SIGN_38" style="width: 100%;height: 100px;background-repeat: no-repeat;" align="center">
+                    <img id ="sign_38_img" style="width: 800px;height: 80px" />
+                </div>
+                <br/>
+                <div align="center">
+                    <div style="display: inline-block">
+                        &nbsp;&nbsp;&nbsp;&nbsp;投保人签名：
+                        <button id="applicantSignBtn" type="button" onclick="applicantSign()">签名</button>
+                        <!--onclick="WebViewJavascriptBridge.sendMessage('signture_applicant');"-->
+                        <div id="APPLICANT_SIGN" style="width: 300px;height: 100px;background-repeat: no-repeat;background-position: left;">
+                            <div style = "height:30px"></div>
+                            <img id="sign_app_img" style = "width:40%; height:60px"/>
+                        </div>
+                    </div>
+
+                <!--<div style="display: inline-block;align:center;" ng-hide="policyForElectron.isSelf" >-->
+                    <div style="display: inline-block;align:center;" >
+                    被保险人/法定监护人签名：
+                    <!--<input type="text" style="border: none" ng-model="policyForElectron.insuredSignTitle">-->
+                    <button id="insuredSignBtn" type="button" onclick="insuredSign()">签名</button>
+                    <!--onclick="WebViewJavascriptBridge.sendMessage('signture_insure');"-->
+                    <div id="INSURED_SIGN" style="width: 300px;height: 100px;background-repeat: no-repeat;background-position: left;">
+                        <div style = "height:30px"></div>
+                        <img id="sign_insurance_img" style = "width:40%; height:60px;"/>
+                    </div>
+                </div>
+                </div>
+
+
+                <div align="center">
+                    投保申请日期：<input type="text" id="applicantSignDateYear" size="12" style="border:0px;border-bottom:#000000 1px solid;">年
+                    <input type="text" id="applicantSignDateMonth" size="12" style="border:0px;border-bottom:#000000 1px solid;">月
+                    <input type="text" id="applicantSignDateDay" size="12" style="border:0px;border-bottom:#000000 1px solid;">日
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<h5>销售人员/代理人机构告知栏</h5>
+<div align="center">
+    <table width="92%" border="1">
+        <tr>
+            <td colspan="3">
+                据您所知，客户的投保行为是否受“除投保人、被保险人、受益人以外的人员或机构（即第三方）”的要求或是由其提供资金而发生的：<br/>
+                <input type="checkbox" ng-checked="policyForElectron.reportBook.thirdPtIdentity == '1'" onclick="clickReadonly(this)"/>是
+                <input type="checkbox" ng-checked="policyForElectron.reportBook.thirdPtIdentity == '0'" onclick="clickReadonly(this)"/>否
+                <input type="checkbox" ng-checked="policyForElectron.reportBook.thirdPtIdentity == '2'" onclick="clickReadonly(this)"/>无法识别，但有理由怀疑存在第三方<br/><br/>
+                1. 若“是”，请填写以下有关第三方的信息：<br/>
+                姓名/机构名称：<input type="text" name="" value="" size="50" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.reportBook.thirdPtName"><br/>
+                联系方式：<input type="text" name="" value="" size="50" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.reportBook.thirdPtContact"><br/>
+                与投保人关系：<input type="text" name="" value="" size="50" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.reportBook.thirdPtRelToApp"><br/>
+                地址：<input type="text" name="" value="" size="50" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.reportBook.thirdPtAddr"><br/><br/>
+                2. 若“无法识别，但有理由怀疑存在第三方”请注明怀疑原因：<br/>
+                怀疑原因：<input type="text" name="" value="" size="50" style="border:0px;border-bottom:#000000 1px solid;" ng-model="policyForElectron.reportBook.thirdPtRemark">
+            </td>
+        </tr>
+        <tr>
+            <td>代理机构名称: {{policyForElectron.salesman.saleOrgName}}</td>
+            <td>柜员名称：  {{policyForElectron.salesman.counterName}}</td>
+            <td>业务人员名称: {{policyForElectron.salesman.saleName}}</td>
+        </tr>
+        <tr>
+            <td>代理机构代码: {{policyForElectron.salesman.netWorkCode}}</td>
+            <td>柜员代码:  {{policyForElectron.salesman.counterCode}}</td>
+            <td>业务人员代码: {{policyForElectron.salesman.saleCode}}</td>
+        </tr>
+    </table>
+
+    <div id="" style="width: 90%;height: 100px;background-repeat: no-repeat;background-position: left; display: inline-block" ng-show="policyForElectron.isCounter">
+        <br/>
+        <br/>
+        &nbsp;&nbsp;&nbsp;销售人员签字：
+        <button id="counterSignBtn" type="button" onclick="auditSign()">签名</button>
+      <!--   <div>
+            <img id="sign_counter_img" style = "width:15%; height:60px;"/>
+        </div>
+ 	  -->
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        签字日期：
+        <input type="text" id="counterSignDateYear" size="10" style="border:0px;border-bottom:#000000 1px solid;">年
+        <input type="text" id="counterSignDateMonth" size="8" style="border:0px;border-bottom:#000000 1px solid;">月
+        <input type="text" id="counterSignDateDay" size="8" style="border:0px;border-bottom:#000000 1px solid;">日
+    </div>
+
+</div>
+</div>
+</body>
+</html>
+
