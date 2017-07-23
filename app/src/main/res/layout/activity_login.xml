@@ -7,7 +7,7 @@
     <include layout="@layout/toolbar_layout" />
 
     <LinearLayout
-        android:layout_width="280dp"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical">
@@ -16,8 +16,7 @@
             android:id="@+id/TInputName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/box_line_edit"
-            android:paddingTop="5dp">
+            android:background="@drawable/box_line_edit">
 
             <EditText
                 android:id="@+id/name"
@@ -33,10 +32,8 @@
             android:id="@+id/TInputNamePwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/box_line_edit"
-
-            android:paddingTop="5dp">
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/box_line_edit">
 
             <EditText
                 android:id="@+id/pwd"
@@ -69,5 +66,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:text="© 2017 N22. All rights reserved.\n账号：abc 密码：a123456"
+        android:textAlignment="center"
         android:textSize="12sp" />
 </RelativeLayout>

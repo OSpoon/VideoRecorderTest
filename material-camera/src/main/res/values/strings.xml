@@ -1,0 +1,19 @@
+<resources>
+
+    <string name="mcam_defaultDuration">00:00</string>
+    <string name="mcam_permissions_needed">权限需要</string>
+    <string name="mcam_video_perm_warning">需要访问您的麦克风和相机。</string>
+    <string name="mcam_retry">重试</string>
+    <string name="mcam_use_video">确定</string>
+    <string name="mcam_use_stillshot">USE STILLSHOT</string>
+    <string name="mcam_portrait">Portrait</string>
+    <string name="mcam_portrait_warning">It\'s recommended that you record in landscape. Record in portrait?</string>
+    <string name="mcam_yes">是的</string>
+    <string name="mcam_error">错误</string>
+    <string name="mcam_video_capture_unsupported">您的设备不支持视频捕获。</string>
+    <string name="mcam_no_audio_access">您还没有访问麦克风，没有录制音频。</string>
+    <string name="mcam_file_size_limit_reached">您已达到最大文件大小！</string>
+    <string name="mcam_image_preview_error_title">图像预览错误</string>
+    <string name="mcam_image_preview_error_message">无法解码位图</string>
+
+</resources>

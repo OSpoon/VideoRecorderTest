@@ -82,7 +82,7 @@ public class LocalFragment extends Fragment implements BaseQuickAdapter.RequestL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the operation_layout for this fragment
         return inflater.inflate(R.layout.fragment_local, container, false);
     }
 

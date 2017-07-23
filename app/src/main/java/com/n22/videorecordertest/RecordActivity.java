@@ -43,6 +43,7 @@ public class RecordActivity extends Activity implements SurfaceHolder.Callback {
         initView();
         initCameraAndSurfaceViewHolder();
 //        prepareMediaRecorder();
+                initListeners();
     }
 
     private void initCameraAndSurfaceViewHolder() {
@@ -157,7 +158,7 @@ public class RecordActivity extends Activity implements SurfaceHolder.Callback {
     @Override
     protected void onResume() {
         super.onResume();
-//        setContentView(R.layout.activity_record);
+//        setContentView(R.operation_layout.activity_record);
 //        initView();
 //        initCameraAndSurfaceViewHolder();
 //        initListeners();

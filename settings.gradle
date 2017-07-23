@@ -1,1 +1,1 @@
-include ':app', ':oss', ':jcvideoplayer_lib'
+include ':app', ':oss', ':jcvideoplayer_lib', ':material-camera'

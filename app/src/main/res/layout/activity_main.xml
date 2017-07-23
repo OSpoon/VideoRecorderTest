@@ -11,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/gray_overlay"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/activity_vertical_margin">
 
@@ -19,6 +19,7 @@
             android:id="@+id/profile_image"
             android:layout_width="96dp"
             android:layout_height="96dp"
+            android:padding="@dimen/dp_10"
             android:src="@mipmap/icon_portrait"
             app:civ_border_color="#FF000000"
             app:civ_border_width="2dp" />
@@ -27,12 +28,11 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
             android:layout_weight="1"
-            android:layout_marginLeft="@dimen/dp_30"
-            android:gravity="center_vertical"
+            android:text="你好:王经理\n邮箱:wjl@n22.com.cn\n地址:建国路126号"
+            android:textAlignment="gravity"
             android:textColor="@color/white_overlay"
-            android:text="你好:王经理\n邮箱:xxxx@xxxx.com\n地址:xxx街道xxx号"
-            android:textAlignment="center"
             android:textSize="@dimen/title_size" />
 
     </LinearLayout>
@@ -51,17 +51,18 @@
             android:layout_weight="1"
             android:background="@drawable/box_line_l"
             android:gravity="center_horizontal"
-            android:orientation="vertical">
+
+            android:orientation="vertical"
+            android:padding="@dimen/dp_4">
 
             <ImageView
                 android:layout_width="@dimen/model_image_size_w"
                 android:layout_height="@dimen/model_image_size_h"
                 android:src="@mipmap/icon_list1" />
 
-            <Button
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@null"
                 android:text="任务列表"
                 android:textColor="@color/black_overlay"
                 android:textSize="@dimen/model_text_size" />
@@ -75,17 +76,17 @@
             android:layout_weight="1"
             android:background="@drawable/box_line_r"
             android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/dp_4">
 
             <ImageView
                 android:layout_width="@dimen/model_image_size_w"
                 android:layout_height="@dimen/model_image_size_h"
                 android:src="@mipmap/icon_list2" />
 
-            <Button
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@null"
                 android:text="新建任务"
                 android:textColor="@color/black_overlay"
                 android:textSize="@dimen/model_text_size" />

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">投保双录App</string>
+    <string name="app_name">投保双录</string>
     <string name="imagedescription">image</string>
     <string name="cannotfindsd">can not find SD</string>
     <string name="emptyfolder">empty folder</string>

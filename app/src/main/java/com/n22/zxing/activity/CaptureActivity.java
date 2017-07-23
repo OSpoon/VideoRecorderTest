@@ -16,6 +16,7 @@
 package com.n22.zxing.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -89,6 +90,12 @@ public final class CaptureActivity extends AppCompatActivity implements
         Intent intent = new Intent(fragment.getActivity(), CaptureActivity.class);
         intent.putExtra(LOCAL_ID, id);
         fragment.startActivityForResult(intent, code);
+    }
+
+    public static void start(Activity activity, int code, String id) {
+        Intent intent = new Intent(activity, CaptureActivity.class);
+        intent.putExtra(LOCAL_ID, id);
+        activity.startActivityForResult(intent, code);
     }
 
     @Override

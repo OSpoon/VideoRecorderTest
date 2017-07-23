@@ -14,9 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.n22.adapter.LocalPagerAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.n22.adapter.NetPagerAdapter;
 import com.n22.bean.RecordInfo;
+import com.n22.videorecordertest.PolicyPreviewActivity;
 import com.n22.videorecordertest.R;
 
 import org.litepal.crud.DataSupport;
@@ -70,7 +71,7 @@ public class NetFragment extends Fragment implements BaseQuickAdapter.RequestLoa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the operation_layout for this fragment
         return inflater.inflate(R.layout.fragment_local, container, false);
     }
 
@@ -82,6 +83,7 @@ public class NetFragment extends Fragment implements BaseQuickAdapter.RequestLoa
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         init();
+        setlistener();
     }
 
     private void init() {
@@ -92,6 +94,23 @@ public class NetFragment extends Fragment implements BaseQuickAdapter.RequestLoa
         mRecyclerView.setAdapter(localPagerAdapter);
         localPagerAdapter.setOnLoadMoreListener(this);
         onRefresh();
+    }
+
+    private void setlistener() {
+        mRecyclerView.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+
+            @Override
+            public void onItemChildClick(final BaseQuickAdapter adapter, View view, int position) {
+                final RecordInfo itemsBean = (RecordInfo) adapter.getData().get(position);
+                if (view.getId() == R.id.iv_preview) {
+                    PolicyPreviewActivity.start(getActivity(), itemsBean.getId());
+                }
+            }
+        });
     }
 
     @Override
@@ -122,7 +141,7 @@ public class NetFragment extends Fragment implements BaseQuickAdapter.RequestLoa
                 mSwipeRefreshLayout.setRefreshing(false);
                 localPagerAdapter.setEnableLoadMore(true);//开启加载更多
             }
-        },200);
+        }, 200);
     }
 
     @Override
@@ -145,7 +164,7 @@ public class NetFragment extends Fragment implements BaseQuickAdapter.RequestLoa
                 }
                 mSwipeRefreshLayout.setEnabled(true);//开启下拉刷新
             }
-        },200);
+        }, 200);
     }
 
     /**
@@ -169,5 +188,4 @@ public class NetFragment extends Fragment implements BaseQuickAdapter.RequestLoa
             mListener.onFragmentInteraction(uri);
         }
     }
-
 }
