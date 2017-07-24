@@ -125,14 +125,26 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/list_layout2"
+            android:id="@+id/new_layout3"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:background="@drawable/box_line_l"
+            android:background="@drawable/box_line_r"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="@dimen/dp_4">
+
+            <ImageView
+                android:layout_width="@dimen/model_image_size_w"
+                android:layout_height="@dimen/model_image_size_h"
+                android:src="@mipmap/icon_list2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="新建任务3"
+                android:textColor="@color/black_overlay"
+                android:textSize="@dimen/model_text_size" />
         </LinearLayout>
 
     </LinearLayout>

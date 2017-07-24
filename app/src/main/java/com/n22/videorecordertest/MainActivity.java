@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String videoPath;
     private DoubleInput doubileInput;
 
+    private boolean isOpen;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.list_layout).setOnClickListener(this);
         findViewById(R.id.new_layout).setOnClickListener(this);
         findViewById(R.id.new_layout2).setOnClickListener(this);
+        findViewById(R.id.new_layout3).setOnClickListener(this);
     }
 
     @Override
@@ -103,6 +106,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.new_layout2:
                 recordVideo();
+                break;
+            case R.id.new_layout3:
+                if (!isOpen){
+                    isOpen=true;
+                    startAudio();
+                }else {
+                    isOpen=false;
+                    stopAudio();
+                }
                 break;
         }
     }
