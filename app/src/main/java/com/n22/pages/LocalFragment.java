@@ -24,8 +24,11 @@ import com.google.gson.Gson;
 import com.n22.adapter.LocalPagerAdapter;
 import com.n22.bean.Policy;
 import com.n22.bean.RecordInfo;
+import com.n22.uploading.OSSUtils;
+import com.n22.util.BeanUtilImpl;
 import com.n22.util.DialogUtils;
 import com.n22.util.FileUtils;
+import com.n22.util.OssHelper;
 import com.n22.videorecordertest.PolicyPreviewActivity;
 import com.n22.videorecordertest.R;
 import com.n22.zxing.activity.CaptureActivity;
@@ -152,7 +155,18 @@ public class LocalFragment extends Fragment implements BaseQuickAdapter.RequestL
                     DialogUtils.getDialog(getActivity(), "确认上传此影像件吗?").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getActivity(), "上传", Toast.LENGTH_SHORT).show();
+                            if (itemsBean.getPolicy()!=null){
+                                OssHelper ossHelper = new OssHelper();
+                                ossHelper.initHelper(getActivity(),itemsBean);
+                                ossHelper.setOnDataComplete(new OssHelper.OnDataComplete() {
+                                    @Override
+                                    public void complete() {
+                                        onRefresh();
+                                    }
+                                });
+                            }else{
+                                DialogUtils.getDialog(getActivity(), "请确认已关联保单信息").create().show();
+                            }
                         }
                     }).create().show();
                 }

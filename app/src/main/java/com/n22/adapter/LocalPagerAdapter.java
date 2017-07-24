@@ -51,7 +51,10 @@ public class LocalPagerAdapter extends BaseQuickAdapter<RecordInfo, BaseViewHold
         helper.addOnClickListener(R.id.iv_delete);
         helper.addOnClickListener(R.id.iv_upload);
 
-        String info = "当前影像件\n编号:" + item.getId() + "\n生成时间:" + item.getUpdateTime() + "\n大小:"+FileUtils.getFileSize(item.getVideotapePath())+"\n";
+        String info = "当前影像件\n编号:" + item.getId() + "\n生成时间:" + item.getUpdateTime() + "\n大小:" + FileUtils.getFileSize(item.getVideotapePath()) + "\n";
+        if (item.getPolicy() != null) {
+            info += "投保单号:" + item.getPolicy().getPolicyCode();
+        }
         tv_info.setText(info);
 
         player.setUp(item.getVideotapePath(), JCVideoPlayerStandard.SCREEN_LAYOUT_LIST, "N22");

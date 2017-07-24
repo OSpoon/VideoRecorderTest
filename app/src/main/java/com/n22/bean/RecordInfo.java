@@ -14,6 +14,7 @@ public class RecordInfo extends DataSupport {
     private long update;//更新时间 yyyy/mm/dd hh/mm/ss
     private String videotapePath;//录像本地路径
     private Policy policy;//扫面二维码绑定保单信息
+    private String sourcetype;
 
     public String getAuthor() {
         return author;

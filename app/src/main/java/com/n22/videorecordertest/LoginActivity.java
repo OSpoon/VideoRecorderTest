@@ -68,30 +68,31 @@ public class LoginActivity extends AppCompatActivity {
         name = getResources().getString(R.string.username);
         pwd = getResources().getString(R.string.pwd);
         notice.setText("© 2017 N22. All rights reserved.\n账号：" + name + " 密码：" + pwd);
-        notice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Connector.getDatabase();
-                LitePal.deleteDatabase("Record_Info.db");
-                for (int i = 1; i < 50; i++) {
-                    RecordInfo recordInfo = new RecordInfo();
-                    recordInfo.setAuthor("abc");
-                    long millis = System.currentTimeMillis();
-                    recordInfo.setUpdateTime(new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(new Date(millis)));
-                    recordInfo.setUpdate(millis);
-                    recordInfo.setVideotapePath(Environment.getExternalStorageDirectory().getPath() + "/VideoRecorderTest/ceshi" + i + ".mp4");
-                    Policy policy = new Policy();
-                    policy.setInsured("被保人" + i);//被保人暂时只模拟保存姓名
-                    policy.setApplicant("投保人" + i);//投保人暂时只模拟保存姓名
-                    policy.setPolicyCode("M1019292039" + i);//保单号
-                    policy.setProduct("最新型XXX保险");//产品名称
-                    policy.setInsureTime(new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(new Date(millis)));//投保时间
-                    policy.save();
-                    recordInfo.setPolicy(policy);
-                    recordInfo.save();
-                }
-            }
-        });
+//        notice.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Connector.getDatabase();
+//                LitePal.deleteDatabase("Record_Info.db");
+//                for (int i = 1; i < 50; i++) {
+//                    RecordInfo recordInfo = new RecordInfo();
+//                    recordInfo.setAuthor("abc");
+//                    long millis = System.currentTimeMillis();
+//                    recordInfo.setUpdateTime(new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(new Date(millis)));
+//                    recordInfo.setUpdate(millis);
+//                    recordInfo.setVideotapePath(Environment.getExternalStorageDirectory().getPath() + "/VideoRecorderTest/ceshi" + i + ".mp4");
+//                    Policy policy = new Policy();
+//                    policy.setInsured("被保人" + i);//被保人暂时只模拟保存姓名
+//                    policy.setApplicant("投保人" + i);//投保人暂时只模拟保存姓名
+//                    policy.setPolicyCode("M1019292039" + i);//保单号
+//                    policy.setPolicyId("1019292039" + i);
+//                    policy.setProduct("最新型XXX保险");//产品名称
+//                    policy.setInsureTime(new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(new Date(millis)));//投保时间
+//                    policy.save();
+//                    recordInfo.setPolicy(policy);
+//                    recordInfo.save();
+//                }
+//            }
+//        });
 //        askPermission();
     }
 

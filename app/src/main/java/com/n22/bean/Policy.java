@@ -13,6 +13,24 @@ public class Policy extends DataSupport {
     private String policyCode;//保单号
     private String product;//产品名称
     private String insureTime;//投保时间
+    private String policyId;
+    private String sourceid;
+
+    public String getSourceid() {
+        return sourceid;
+    }
+
+    public void setSourceid(String sourceid) {
+        this.sourceid = sourceid;
+    }
+
+    public String getPolicyId() {
+        return policyId;
+    }
+
+    public void setPolicyId(String policyId) {
+        this.policyId = policyId;
+    }
 
     @Override
     public long getBaseObjId() {
