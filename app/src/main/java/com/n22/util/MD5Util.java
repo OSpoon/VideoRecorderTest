@@ -1,6 +1,7 @@
 package com.n22.util;
 
-import com.n22.util.encoder.Config;
+
+import com.n22.bean.net.Config;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;

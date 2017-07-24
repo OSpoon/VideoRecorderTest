@@ -16,9 +16,14 @@ import com.google.gson.Gson;
 import com.n22.bean.Policy;
 import com.n22.bean.RecordInfo;
 import com.n22.pages.LocalFragment;
+import com.n22.util.DateUtil;
 import com.n22.util.DialogUtils;
 import com.n22.util.FileUtils;
 import com.n22.zxing.activity.CaptureActivity;
+import com.zsmarter.doubleinputsdk.bean.DoubleInoutSDKKey;
+import com.zsmarter.doubleinputsdk.bean.DoubleInput;
+import com.zsmarter.doubleinputsdk.bean.VideoRecorderOptions;
+import com.zsmarter.doubleinputsdk.bean.WaterMarkOption;
 
 import org.litepal.crud.DataSupport;
 
@@ -31,6 +36,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "MainActivity";
     private static final int CAMERA_RQ = 0x998;
     private static final int REQUEST_CODE = 0x997;
+    //第三方双录sdk
+    private String appid = "RDkzMDk0QzEtQUFFNC00MzY5LTg5MDMtQzhBRDBFNTM2MDlE";//测试用appid
+    private String appkey = "MEQyNTNBMEQtMDlCMi00MTJFLUI0RDctREY4QjgzQUE0QjY1";//测试用appkey
+    private String accessKey = "QkJERDUxMDQtQTg4NC00QzIwLUIxOEQtNUI5NUVDRENGMTc3";//测试用accessKey
+
+    private DoubleInoutSDKKey sdkKey;
+    private String videoPath;
+    private DoubleInput doubileInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +51,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initView();
         initMaterialCamera();
+        initDoubleInoutSDK();
+    }
+
+    private void initDoubleInoutSDK() {
+        sdkKey = new DoubleInoutSDKKey(appid, appkey, accessKey);
+        doubileInput = new DoubleInput(this);
+    }
+
+    public void startAudio() {
+        doubileInput.startAudio("aaa/audio", "text", sdkKey);
+    }
+
+    public void stopAudio() {
+        doubileInput.stopAudio();
+    }
+
+    public void recordVideo() {
+        videoPath = Environment.getExternalStorageDirectory().getPath() + "/VideoRecorderTest/"+ DateUtil.getCurrentTime();
+        VideoRecorderOptions options = new VideoRecorderOptions(videoPath);
+        doubileInput.recordVideo(options, sdkKey);
+    }
+
+    public void startWater(){
+        WaterMarkOption option = new WaterMarkOption("aaa/picture", "text");
+        option.setAlpha(255);
+        option.setType(WaterMarkOption.TYPE_MARK_STRING);//设置水印类型
+        option.setPosition(WaterMarkOption.POSITION_RIGHT_BOTTOM);//设置水印位置
+        option.setStringMarkSize(40);//设置水印字体大小
+        option.setPenColor("#4cd964");//设置水印颜色
+        doubileInput.stakeWarterMarkPicture(option,sdkKey);
     }
 
     private void initView() {
@@ -46,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.title_center).setVisibility(View.VISIBLE);
         findViewById(R.id.list_layout).setOnClickListener(this);
         findViewById(R.id.new_layout).setOnClickListener(this);
+        findViewById(R.id.new_layout2).setOnClickListener(this);
     }
 
     @Override
@@ -56,6 +100,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.new_layout:
                 materialCamera.start(CAMERA_RQ); // Starts the camera activity, the result will be sent back to the current Activitys
+                break;
+            case R.id.new_layout2:
+                recordVideo();
                 break;
         }
     }
@@ -97,6 +144,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == DoubleInput.DOUBLEINPUT_WARTERMARKER_CAMERA_START) {
+            //拍照完成回调
+            doubileInput.waterMarkActivityForResult();
+        }
+        if (resultCode == DoubleInput.DOUBLEINPUT_VIDEO_SUCCESS){
+            //视频完成回调
+        }
         // Received recording or error from MaterialCamera
         if (requestCode == CAMERA_RQ) {
             if (resultCode == RESULT_OK) {

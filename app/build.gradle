@@ -10,12 +10,19 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
         }
     }
 
@@ -26,6 +33,13 @@ android {
             keyAlias "xrclient.jks"
             keyPassword "123456"
         }
+    }
+}
+
+//aar
+repositories {
+    flatDir {
+        dirs 'libs'
     }
 }
 
@@ -51,4 +65,9 @@ dependencies {
     compile project(':oss')
     compile project(':material-camera')
     compile files('libs/org.apache.http.legacy.jar')
+    compile(name: 'doubleinputsdk', ext: 'aar')
+    compile project(':crashcanary')
+    compile 'com.zhy:okhttputils:2.6.2'
+    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    compile 'com.android.support:multidex:1.0.1'
 }
