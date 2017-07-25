@@ -56,7 +56,6 @@ public class OssHelper {
                         DialogUtils.getDialog(activity, (String) msg.obj).create().show();
                     break;
                 case 0x2345:
-                    DialogUtils.getDialog(activity, "上传完成,点击取消即可。").create().show();
                     FileUtils.deleteFile(recordInfo.getVideotapePath());
                     DataSupport.delete(RecordInfo.class, Long.parseLong(recordInfo.getId()));
                     if (onDataComplete!=null)
@@ -107,7 +106,7 @@ public class OssHelper {
         /** 文件名称 */
         appSysFileInfo.filename = FileUtils.getFileName(recordInfo.getVideotapePath());
         /** 文件类型 */
-        appSysFileInfo.filetype = "3";// 1yin2shi3ying
+        appSysFileInfo.filetype = "2";// 1yin2shi3ying
         /** 文件排序 */
         appSysFileInfo.filesort = 1;// shuliang
         /** 描述 */
@@ -187,7 +186,6 @@ public class OssHelper {
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setTitle("温馨提示");
         mProgressDialog.setMessage("请等待...");
-        mProgressDialog.setCancelable(false);
     }
 
     public void showPressDialog() {

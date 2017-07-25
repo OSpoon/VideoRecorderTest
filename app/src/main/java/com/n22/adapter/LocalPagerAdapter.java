@@ -3,7 +3,9 @@ package com.n22.adapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -41,12 +43,10 @@ public class LocalPagerAdapter extends BaseQuickAdapter<RecordInfo, BaseViewHold
     protected void convert(BaseViewHolder helper, RecordInfo item) {
         TextView tv_info = helper.getView(R.id.tv_info);
         JCVideoPlayerStandard player = helper.getView(R.id.videoplayer);
-        ImageView iv_preview = helper.getView(R.id.iv_preview);
         ImageView iv_scan = helper.getView(R.id.iv_scan);
         ImageView iv_delete = helper.getView(R.id.iv_delete);
         ImageView iv_upload = helper.getView(R.id.iv_upload);
 
-        helper.addOnClickListener(R.id.iv_preview);
         helper.addOnClickListener(R.id.iv_scan);
         helper.addOnClickListener(R.id.iv_delete);
         helper.addOnClickListener(R.id.iv_upload);
@@ -61,10 +61,10 @@ public class LocalPagerAdapter extends BaseQuickAdapter<RecordInfo, BaseViewHold
 
         Policy policy = item.getPolicy();
         if (policy != null) {
-            iv_preview.setVisibility(View.VISIBLE);
+            iv_upload.setVisibility(View.VISIBLE);
             iv_scan.setVisibility(View.GONE);
         } else {
-            iv_preview.setVisibility(View.GONE);
+            iv_upload.setVisibility(View.GONE);
             iv_scan.setVisibility(View.VISIBLE);
         }
         if (isScrolling) {

@@ -29,6 +29,7 @@ import com.n22.util.BeanUtilImpl;
 import com.n22.util.DialogUtils;
 import com.n22.util.FileUtils;
 import com.n22.util.OssHelper;
+import com.n22.videorecordertest.MainActivity;
 import com.n22.videorecordertest.PolicyPreviewActivity;
 import com.n22.videorecordertest.R;
 import com.n22.zxing.activity.CaptureActivity;
@@ -49,6 +50,7 @@ public class LocalFragment extends Fragment implements BaseQuickAdapter.RequestL
 
     private static final String TAG = "LocalFragment";
     public static final int REQUEST_CODE = 0x999;
+    public static final int PREVIEW_CODE = 0x996;
     private OnFragmentInteractionListener mListener;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     RecyclerView mRecyclerView;
@@ -120,16 +122,14 @@ public class LocalFragment extends Fragment implements BaseQuickAdapter.RequestL
             @Override
             public void onItemChildClick(final BaseQuickAdapter adapter, View view, int position) {
                 final RecordInfo itemsBean = (RecordInfo) adapter.getData().get(position);
-                if (view.getId() == R.id.iv_preview) {
-                    PolicyPreviewActivity.start(getActivity(), itemsBean.getId());
-                } else if (view.getId() == R.id.iv_scan) {
+                if (view.getId() == R.id.iv_scan) {
                     CaptureActivity.start(LocalFragment.this, REQUEST_CODE, itemsBean.getId());
                 } else if (view.getId() == R.id.iv_delete) {
                     DialogUtils.getDialog(getActivity(), "确认删除此影像件吗?").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             boolean deleteFile = FileUtils.deleteFile(itemsBean.getVideotapePath());
-                            if (deleteFile) {//文件删除成功
+//                            if (deleteFile) {//文件删除成功
                                 if (itemsBean.getPolicy() != null) {//保单信息不为空
                                     int deletePolicy = DataSupport.delete(Policy.class, itemsBean.getPolicy().getBaseObjId());//删除保单信息
                                     if (deletePolicy == 1) {//保单信息删除成功
@@ -148,27 +148,11 @@ public class LocalFragment extends Fragment implements BaseQuickAdapter.RequestL
                                         Toast.makeText(getActivity(), "删除完成", Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                            }
+//                            }
                         }
                     }).create().show();
                 } else if (view.getId() == R.id.iv_upload) {
-                    DialogUtils.getDialog(getActivity(), "确认上传此影像件吗?").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (itemsBean.getPolicy()!=null){
-                                OssHelper ossHelper = new OssHelper();
-                                ossHelper.initHelper(getActivity(),itemsBean);
-                                ossHelper.setOnDataComplete(new OssHelper.OnDataComplete() {
-                                    @Override
-                                    public void complete() {
-                                        onRefresh();
-                                    }
-                                });
-                            }else{
-                                DialogUtils.getDialog(getActivity(), "请确认已关联保单信息").create().show();
-                            }
-                        }
-                    }).create().show();
+                    PolicyPreviewActivity.start(getActivity(), itemsBean.getId());
                 }
             }
         });
@@ -277,8 +261,9 @@ public class LocalFragment extends Fragment implements BaseQuickAdapter.RequestL
                                     recordInfo.setPolicy(policy);
                                     save = recordInfo.save();
                                     if (save) {
-                                        Toast.makeText(getActivity(), "保单信息关联成功", Toast.LENGTH_SHORT).show();
-                                        onRefresh();
+                                        //数据库ID
+                                        PolicyPreviewActivity.start(LocalFragment.this, PREVIEW_CODE, recordInfo.getId());
+//                                        onRefresh();
                                     } else {
                                         Toast.makeText(getActivity(), "保单信息关联失败", Toast.LENGTH_SHORT).show();
                                     }
@@ -290,6 +275,8 @@ public class LocalFragment extends Fragment implements BaseQuickAdapter.RequestL
                     Toast.makeText(getActivity(), "请确认二维码是否正确:", Toast.LENGTH_SHORT).show();
                 }
             }
+        } else if (requestCode == LocalFragment.PREVIEW_CODE && resultCode == getActivity().RESULT_OK) {
+            onRefresh();
         }
     }
 }

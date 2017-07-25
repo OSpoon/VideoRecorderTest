@@ -1,8 +1,9 @@
 package com.n22;
 
 import android.app.Application;
-import android.support.multidex.MultiDex;
+//import android.support.multidex.MultiDex;
 
+import com.n22.util.Utils;
 import com.simple.CrashCanary;
 
 import org.litepal.LitePal;
@@ -16,7 +17,8 @@ public class AppContext extends LitePalApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        MultiDex.install(this);
+//        MultiDex.install(this);
+        Utils.init(this);
         //初始化数据库
         LitePal.initialize(this);
         final CrashCanary crashCanary = new CrashCanary.Builder(this)

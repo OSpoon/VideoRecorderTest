@@ -97,7 +97,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/lay_4"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
@@ -119,7 +119,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="新建任务2"
+                android:text="Record Video"
                 android:textColor="@color/black_overlay"
                 android:textSize="@dimen/model_text_size" />
         </LinearLayout>
@@ -142,9 +142,53 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="新建任务3"
+                android:text="Record Audio"
                 android:textColor="@color/black_overlay"
                 android:textSize="@dimen/model_text_size" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/lay_4"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/new_layout4"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/box_line_r"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_4">
+
+            <ImageView
+                android:layout_width="@dimen/model_image_size_w"
+                android:layout_height="@dimen/model_image_size_h"
+                android:src="@mipmap/icon_list2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Watermark"
+                android:textColor="@color/black_overlay"
+                android:textSize="@dimen/model_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/new_layout6"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/box_line_r"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_4">
+
         </LinearLayout>
 
     </LinearLayout>

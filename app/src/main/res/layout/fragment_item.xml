@@ -57,13 +57,6 @@
                 android:src="@mipmap/icon_scan" />
 
             <ImageView
-                android:id="@+id/iv_preview"
-                android:layout_width="@dimen/lay_36"
-                android:layout_height="@dimen/lay_36"
-                android:layout_marginLeft="@dimen/lay_16"
-                android:src="@mipmap/icon_preview" />
-
-            <ImageView
                 android:id="@+id/iv_delete"
                 android:layout_width="@dimen/lay_36"
                 android:layout_height="@dimen/lay_36"

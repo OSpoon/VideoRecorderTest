@@ -106,9 +106,9 @@ public class NetFragment extends Fragment implements BaseQuickAdapter.RequestLoa
             @Override
             public void onItemChildClick(final BaseQuickAdapter adapter, View view, int position) {
                 final RecordInfo itemsBean = (RecordInfo) adapter.getData().get(position);
-                if (view.getId() == R.id.iv_preview) {
-                    PolicyPreviewActivity.start(getActivity(), itemsBean.getId());
-                }
+//                if (view.getId() == R.id.iv_preview) {
+//                    PolicyPreviewActivity.start(getActivity(), itemsBean.getId());
+//                }
             }
         });
     }

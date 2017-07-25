@@ -158,7 +158,7 @@ public class OSSUtils {
         }
 
         if (provider == null) {
-			provider = getToken(beanUtil.ObtainToken(), beanUtil.BaseUrl());
+            provider = getToken(beanUtil.ObtainToken(), beanUtil.BaseUrl());
         }
 
         if (provider == null) {
@@ -189,7 +189,13 @@ public class OSSUtils {
             Request request = new Request.Builder().url(url).post(body).build();
             Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
-                String decode = beanUtil.AnalyticMessage(response.body().string());
+                String decode = null;
+                try {
+                    decode = beanUtil.AnalyticMessage(response.body().string());
+                } catch (Exception e) {
+                    getOssCompletedCallback().onFailure(null, new ClientException(response.body().string()), null);
+                }
+
                 if (TextUtils.isEmpty(decode)) {
                     getOssCompletedCallback().onFailure(null, new ClientException("获取Token数据解析错误！"), null);
                 } else {

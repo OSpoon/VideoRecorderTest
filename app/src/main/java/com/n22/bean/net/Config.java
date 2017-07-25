@@ -5,6 +5,6 @@ package com.n22.bean.net;
  */
 
 public class Config {
-    public static final String ORG_VALIDATE_CODE = "ABC";
-    public static final String COM_ID = "";
+    public static final String ORG_VALIDATE_CODE = "ABCD12345678901234567890";
+    public static final String COM_ID = "HT20151001";
 }

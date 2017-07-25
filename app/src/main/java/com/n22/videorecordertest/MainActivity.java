@@ -1,6 +1,8 @@
 package com.n22.videorecordertest;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,9 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialcamera.MaterialCamera;
+import com.amitshekhar.utils.NetworkUtils;
 import com.google.gson.Gson;
 import com.n22.bean.Policy;
 import com.n22.bean.RecordInfo;
@@ -19,6 +23,7 @@ import com.n22.pages.LocalFragment;
 import com.n22.util.DateUtil;
 import com.n22.util.DialogUtils;
 import com.n22.util.FileUtils;
+import com.n22.util.NetWorkUtils;
 import com.n22.zxing.activity.CaptureActivity;
 import com.zsmarter.doubleinputsdk.bean.DoubleInoutSDKKey;
 import com.zsmarter.doubleinputsdk.bean.DoubleInput;
@@ -42,10 +47,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String accessKey = "QkJERDUxMDQtQTg4NC00QzIwLUIxOEQtNUI5NUVDRENGMTc3";//测试用accessKey
 
     private DoubleInoutSDKKey sdkKey;
-    private String videoPath;
     private DoubleInput doubileInput;
+    private String videopath;
+    private String picturepath;
+    private String audiopath;
 
     private boolean isOpen;
+
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +70,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         doubileInput = new DoubleInput(this);
     }
 
-    public void startAudio() {
-        doubileInput.startAudio("aaa/audio", "text", sdkKey);
+    public boolean startAudio() {
+        if (NetWorkUtils.isConnected()) {
+            String yyyy_mm_dd_hh_mm_ss = DateUtil.getCurrentTime("yyyy_MM_dd_HH_mm_ss");
+            audiopath = "VideoRecorderTest/audio/" + "audio_" + yyyy_mm_dd_hh_mm_ss;
+            doubileInput.startAudio("VideoRecorderTest/audio", "audio_" + yyyy_mm_dd_hh_mm_ss, sdkKey);
+            return true;
+        }
+        return false;
     }
 
     public void stopAudio() {
@@ -70,19 +85,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void recordVideo() {
-        videoPath = Environment.getExternalStorageDirectory().getPath() + "/VideoRecorderTest/"+ DateUtil.getCurrentTime();
-        VideoRecorderOptions options = new VideoRecorderOptions(videoPath);
-        doubileInput.recordVideo(options, sdkKey);
+        if (NetWorkUtils.isConnected()) {
+            videopath = "VideoRecorderTest/video/" + "video_" + DateUtil.getCurrentTime("yyyy_MM_dd_HH_mm_ss");
+            VideoRecorderOptions options = new VideoRecorderOptions(videopath);
+//            options.setHaveWaterMark(true);
+            doubileInput.recordVideo(options, sdkKey);
+        }
     }
 
-    public void startWater(){
-        WaterMarkOption option = new WaterMarkOption("aaa/picture", "text");
+    public void startWater() {
+        String yyyy_mm_dd_hh_mm_ss = DateUtil.getCurrentTime("yyyy_MM_dd_HH_mm_ss");
+        picturepath = "VideoRecorderTest/picture/" + "picture_" + yyyy_mm_dd_hh_mm_ss;
+        WaterMarkOption option = new WaterMarkOption("VideoRecorderTest/picture", "picture_" + yyyy_mm_dd_hh_mm_ss);
         option.setAlpha(255);
         option.setType(WaterMarkOption.TYPE_MARK_STRING);//设置水印类型
         option.setPosition(WaterMarkOption.POSITION_RIGHT_BOTTOM);//设置水印位置
         option.setStringMarkSize(40);//设置水印字体大小
         option.setPenColor("#4cd964");//设置水印颜色
-        doubileInput.stakeWarterMarkPicture(option,sdkKey);
+        doubileInput.stakeWarterMarkPicture(option, sdkKey);
     }
 
     private void initView() {
@@ -93,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.new_layout).setOnClickListener(this);
         findViewById(R.id.new_layout2).setOnClickListener(this);
         findViewById(R.id.new_layout3).setOnClickListener(this);
+        findViewById(R.id.new_layout4).setOnClickListener(this);
     }
 
     @Override
@@ -108,13 +129,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 recordVideo();
                 break;
             case R.id.new_layout3:
-                if (!isOpen){
-                    isOpen=true;
-                    startAudio();
-                }else {
-                    isOpen=false;
-                    stopAudio();
+                boolean audio = startAudio();
+                if (audio) {
+                    initProgress(MainActivity.this);
+                    showPressDialog();
                 }
+                break;
+            case R.id.new_layout4:
+                startWater();
                 break;
         }
     }
@@ -159,9 +181,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (requestCode == DoubleInput.DOUBLEINPUT_WARTERMARKER_CAMERA_START) {
             //拍照完成回调
             doubileInput.waterMarkActivityForResult();
+            picturepath = Environment.getExternalStorageDirectory().getPath() + "/" + picturepath + ".png";
+            DialogUtils.getDialog(MainActivity.this, picturepath).create().show();
         }
-        if (resultCode == DoubleInput.DOUBLEINPUT_VIDEO_SUCCESS){
+        if (resultCode == DoubleInput.DOUBLEINPUT_VIDEO_SUCCESS) {
             //视频完成回调
+            final RecordInfo recordInfo = new RecordInfo();
+            recordInfo.setAuthor("abc");
+            long millis = System.currentTimeMillis();
+            recordInfo.setUpdateTime(new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(new Date(millis)));
+            recordInfo.setUpdate(millis);
+            recordInfo.setVideotapePath(Environment.getExternalStorageDirectory().getPath() + "/" + videopath + ".mp4");
+            videopath = null;
+            recordInfo.save();
+            DialogUtils.getDialog(this, "影像件录制完成,编号:" + recordInfo.getId() + "\n是否开始关联保单信息?\n取消后可在任务列表查看并操作").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    CaptureActivity.start(MainActivity.this, REQUEST_CODE, recordInfo.getId());
+                }
+            }).create().show();
         }
         // Received recording or error from MaterialCamera
         if (requestCode == CAMERA_RQ) {
@@ -210,6 +248,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         recordInfo.setPolicy(policy);
                                         save = recordInfo.save();
                                         if (save) {
+                                            //数据库ID
+                                            PolicyPreviewActivity.start(MainActivity.this, recordInfo.getId());
                                             Toast.makeText(MainActivity.this, "保单信息关联成功", Toast.LENGTH_SHORT).show();
                                         } else {
                                             Toast.makeText(MainActivity.this, "保单信息关联失败", Toast.LENGTH_SHORT).show();
@@ -223,6 +263,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             }
+    }
+
+    /**
+     * 初始化进度条
+     */
+    public void initProgress(Context aContext) {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(aContext);
+        }
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setTitle("温馨提示");
+        mProgressDialog.setMessage("正在录音,如需结束请点击关闭...");
+        mProgressDialog.setButton(DialogInterface.BUTTON_POSITIVE, "关闭", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                stopAudio();
+                audiopath = Environment.getExternalStorageDirectory().getPath() + "/" + audiopath + ".mp3";
+                DialogUtils.getDialog(MainActivity.this, audiopath).create().show();
+            }
+        });
+    }
+
+    public void showPressDialog() {
+        if (mProgressDialog == null) {
+            return;
+        }
+        mProgressDialog.show();
+    }
+
+
+    public void dismissProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 }
 

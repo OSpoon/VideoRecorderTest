@@ -46,8 +46,6 @@ public class NetPagerAdapter extends BaseQuickAdapter<RecordInfo, BaseViewHolder
         helper.getView(R.id.iv_delete).setVisibility(View.GONE);
         helper.getView(R.id.iv_upload).setVisibility(View.GONE);
 
-        helper.addOnClickListener(R.id.iv_preview);
-
         String info = "当前影像件\n编号:" + item.getId() + "\n生成时间:" + item.getUpdateTime() + "\n大小:"+FileUtils.getFileSize(item.getVideotapePath())+"\n";
         tv_info.setText(info);
 

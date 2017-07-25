@@ -10,7 +10,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
-        multiDexEnabled true
+//        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -19,6 +19,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+//    dexOptions {
+//        javaMaxHeapSize "4g" //specify the heap size for the dex process
+//    }
 
     sourceSets {
         main {
@@ -67,7 +71,7 @@ dependencies {
     compile files('libs/org.apache.http.legacy.jar')
     compile(name: 'doubleinputsdk', ext: 'aar')
     compile project(':crashcanary')
-    compile 'com.zhy:okhttputils:2.6.2'
-    compile 'com.squareup.okhttp3:okhttp:3.3.1'
-    compile 'com.android.support:multidex:1.0.1'
+//    compile 'com.zhy:okhttputils:2.6.2'
+//    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+//    compile 'com.android.support:multidex:1.0.1'
 }
