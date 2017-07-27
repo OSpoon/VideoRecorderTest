@@ -70,6 +70,7 @@ dependencies {
     compile project(':material-camera')
     compile files('libs/org.apache.http.legacy.jar')
     compile(name: 'doubleinputsdk', ext: 'aar')
+//    compile(name: 'doubleinputsdk_test', ext: 'aar')
     compile project(':crashcanary')
 //    compile 'com.zhy:okhttputils:2.6.2'
 //    compile 'com.squareup.okhttp3:okhttp:3.3.1'

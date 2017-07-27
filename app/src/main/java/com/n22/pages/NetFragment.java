@@ -15,14 +15,22 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.google.gson.Gson;
 import com.n22.adapter.NetPagerAdapter;
+import com.n22.bean.NetPolicyVideoList;
 import com.n22.bean.RecordInfo;
+import com.n22.util.encoder.Config;
 import com.n22.videorecordertest.PolicyPreviewActivity;
 import com.n22.videorecordertest.R;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.litepal.crud.DataSupport;
 
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Request;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -132,16 +140,38 @@ public class NetFragment extends Fragment implements BaseQuickAdapter.RequestLoa
 
     @Override
     public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
                 localPagerAdapter.setEnableLoadMore(false);//关闭加载更多
                 page = 0;
 //                localPagerAdapter.setNewData(DataSupport.order("id desc").limit(ONE_PAGE_SIZE).find(RecordInfo.class));
-                mSwipeRefreshLayout.setRefreshing(false);
-                localPagerAdapter.setEnableLoadMore(true);//开启加载更多
-            }
-        }, 200);
+                String url = "http:/"+ Config.HOST_IP+"/com.ifp.oms/imageQueryList/index/%7BmenuId%7D/findInfor";
+                OkHttpUtils
+                        .get()
+                        .url(url)
+                        .addParams("applyCode", "20170704548302036")
+                        .addParams("policyId", "7963972797831003889")
+                        .build()
+                        .execute(new StringCallback()
+                        {
+
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                mSwipeRefreshLayout.setRefreshing(false);
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                NetPolicyVideoList netPolicyVideoList = new Gson().fromJson(response, NetPolicyVideoList.class);
+                                localPagerAdapter.setNewData(netPolicyVideoList.getInsureImageUploadDetail().getUpFileInfos());
+                                mSwipeRefreshLayout.setRefreshing(false);
+                            }
+                        });
+
+//                localPagerAdapter.setEnableLoadMore(true);//开启加载更多
+//            }
+//        }, 200);
     }
 
     @Override

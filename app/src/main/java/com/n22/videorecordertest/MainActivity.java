@@ -1,28 +1,26 @@
 package com.n22.videorecordertest;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialcamera.MaterialCamera;
-import com.amitshekhar.utils.NetworkUtils;
 import com.google.gson.Gson;
 import com.n22.bean.Policy;
 import com.n22.bean.RecordInfo;
-import com.n22.pages.LocalFragment;
 import com.n22.util.DateUtil;
 import com.n22.util.DialogUtils;
-import com.n22.util.FileUtils;
+import com.n22.util.ImageUtils;
 import com.n22.util.NetWorkUtils;
 import com.n22.zxing.activity.CaptureActivity;
 import com.zsmarter.doubleinputsdk.bean.DoubleInoutSDKKey;
@@ -52,8 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String picturepath;
     private String audiopath;
 
-    private boolean isOpen;
-
     private ProgressDialog mProgressDialog;
 
     @Override
@@ -68,41 +64,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initDoubleInoutSDK() {
         sdkKey = new DoubleInoutSDKKey(appid, appkey, accessKey);
         doubileInput = new DoubleInput(this);
-    }
-
-    public boolean startAudio() {
-        if (NetWorkUtils.isConnected()) {
-            String yyyy_mm_dd_hh_mm_ss = DateUtil.getCurrentTime("yyyy_MM_dd_HH_mm_ss");
-            audiopath = "VideoRecorderTest/audio/" + "audio_" + yyyy_mm_dd_hh_mm_ss;
-            doubileInput.startAudio("VideoRecorderTest/audio", "audio_" + yyyy_mm_dd_hh_mm_ss, sdkKey);
-            return true;
-        }
-        return false;
-    }
-
-    public void stopAudio() {
-        doubileInput.stopAudio();
-    }
-
-    public void recordVideo() {
-        if (NetWorkUtils.isConnected()) {
-            videopath = "VideoRecorderTest/video/" + "video_" + DateUtil.getCurrentTime("yyyy_MM_dd_HH_mm_ss");
-            VideoRecorderOptions options = new VideoRecorderOptions(videopath);
-//            options.setHaveWaterMark(true);
-            doubileInput.recordVideo(options, sdkKey);
-        }
-    }
-
-    public void startWater() {
-        String yyyy_mm_dd_hh_mm_ss = DateUtil.getCurrentTime("yyyy_MM_dd_HH_mm_ss");
-        picturepath = "VideoRecorderTest/picture/" + "picture_" + yyyy_mm_dd_hh_mm_ss;
-        WaterMarkOption option = new WaterMarkOption("VideoRecorderTest/picture", "picture_" + yyyy_mm_dd_hh_mm_ss);
-        option.setAlpha(255);
-        option.setType(WaterMarkOption.TYPE_MARK_STRING);//设置水印类型
-        option.setPosition(WaterMarkOption.POSITION_RIGHT_BOTTOM);//设置水印位置
-        option.setStringMarkSize(40);//设置水印字体大小
-        option.setPenColor("#4cd964");//设置水印颜色
-        doubileInput.stakeWarterMarkPicture(option, sdkKey);
     }
 
     private void initView() {
@@ -175,94 +136,145 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .audioDisabled(false);                             // 设置为真实录制视频没有任何音频。
     }
 
+    public boolean startAudio() {
+        if (NetWorkUtils.isConnected()) {
+            String yyyy_mm_dd_hh_mm_ss = DateUtil.getCurrentTime("yyyy_MM_dd_HH_mm_ss");
+            audiopath = "VideoRecorderTest/audio/" + "audio_" + yyyy_mm_dd_hh_mm_ss;
+            doubileInput.startAudio("VideoRecorderTest/audio", "audio_" + yyyy_mm_dd_hh_mm_ss, sdkKey);
+            return true;
+        }
+        return false;
+    }
+
+    public void stopAudio() {
+        doubileInput.stopAudio();
+    }
+
+    public void recordVideo() {
+        if (NetWorkUtils.isConnected()) {
+            videopath = "VideoRecorderTest/video/" + "video_" + DateUtil.getCurrentTime("yyyy_MM_dd_HH_mm_ss");
+            VideoRecorderOptions options = new VideoRecorderOptions(videopath);
+            options.setVideoMaxTime(60);//录制最大时长
+            options.setmWidth(1080);
+            options.setmHeight(720);
+            options.setFrame(18);
+            options.setFrameRate(30);
+            options.setVideoEncodingBitRate(1024);
+            options.setAudioEncodingBitRate(256000);
+            options.setAudioSampleRate(32000);
+            options.setWaterPaddingWidth(60);
+            options.setWaterPaddingHeight(60);
+            options.setDistinguishability(720);
+            options.setHaveWaterMark(true);
+            Drawable drawable = getResources().getDrawable(R.mipmap.icon_watermark);
+            options.setWaterMarkPicture(ImageUtils.drawable2Bitmap(drawable));
+            doubileInput.recordVideo(options, sdkKey);
+        }
+    }
+
+    public void startWater() {
+        String yyyy_mm_dd_hh_mm_ss = DateUtil.getCurrentTime("yyyy_MM_dd_HH_mm_ss");
+        picturepath = "VideoRecorderTest/picture/" + "picture_" + yyyy_mm_dd_hh_mm_ss;
+        WaterMarkOption option = new WaterMarkOption("VideoRecorderTest/picture", "picture_" + yyyy_mm_dd_hh_mm_ss);
+        option.setAlpha(255);
+        option.setType(WaterMarkOption.TYPE_MARK_STRING);//设置水印类型
+        option.setPosition(WaterMarkOption.POSITION_RIGHT_BOTTOM);//设置水印位置
+        option.setStringMarkSize(40);//设置水印字体大小
+        option.setPenColor("#4cd964");//设置水印颜色
+        doubileInput.stakeWarterMarkPicture(option, sdkKey);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //图片添加水印
         if (requestCode == DoubleInput.DOUBLEINPUT_WARTERMARKER_CAMERA_START) {
             //拍照完成回调
             doubileInput.waterMarkActivityForResult();
             picturepath = Environment.getExternalStorageDirectory().getPath() + "/" + picturepath + ".png";
             DialogUtils.getDialog(MainActivity.this, picturepath).create().show();
-        }
-        if (resultCode == DoubleInput.DOUBLEINPUT_VIDEO_SUCCESS) {
-            //视频完成回调
-            final RecordInfo recordInfo = new RecordInfo();
-            recordInfo.setAuthor("abc");
-            long millis = System.currentTimeMillis();
-            recordInfo.setUpdateTime(new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(new Date(millis)));
-            recordInfo.setUpdate(millis);
-            recordInfo.setVideotapePath(Environment.getExternalStorageDirectory().getPath() + "/" + videopath + ".mp4");
-            videopath = null;
-            recordInfo.save();
-            DialogUtils.getDialog(this, "影像件录制完成,编号:" + recordInfo.getId() + "\n是否开始关联保单信息?\n取消后可在任务列表查看并操作").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    CaptureActivity.start(MainActivity.this, REQUEST_CODE, recordInfo.getId());
-                }
-            }).create().show();
-        }
-        // Received recording or error from MaterialCamera
-        if (requestCode == CAMERA_RQ) {
-            if (resultCode == RESULT_OK) {
+        } else
+            //sdk视频录制完成
+            if (resultCode == DoubleInput.DOUBLEINPUT_VIDEO_SUCCESS) {
+                //视频完成回调
                 final RecordInfo recordInfo = new RecordInfo();
                 recordInfo.setAuthor("abc");
                 long millis = System.currentTimeMillis();
                 recordInfo.setUpdateTime(new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(new Date(millis)));
                 recordInfo.setUpdate(millis);
-                recordInfo.setVideotapePath(data.getData().getPath());
+                recordInfo.setVideotapePath(Environment.getExternalStorageDirectory().getPath() + "/" + videopath + ".mp4");
+                videopath = null;
                 recordInfo.save();
-                final File file = new File(data.getData().getPath());
                 DialogUtils.getDialog(this, "影像件录制完成,编号:" + recordInfo.getId() + "\n是否开始关联保单信息?\n取消后可在任务列表查看并操作").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         CaptureActivity.start(MainActivity.this, REQUEST_CODE, recordInfo.getId());
                     }
                 }).create().show();
-            } else if (data != null) {
-                Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
-                if (e != null) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
-                }
-            }
-        } else
-        /**处理二维码扫描结果*/
-            if (requestCode == MainActivity.REQUEST_CODE && resultCode == RESULT_OK) {
-                //处理扫描结果（在界面上显示）
-                if (null != data) {
-                    Bundle bundle = data.getExtras();
-                    if (bundle == null) {
-                        return;
-                    }
-                    try {
-                        String msg = bundle.getString(CaptureActivity.SCAN_MSG);
-                        final String local_id = bundle.getString(CaptureActivity.LOCAL_ID);
-                        final Policy policy = new Gson().fromJson(msg, Policy.class);
-                        DialogUtils.getDialog(MainActivity.this, "二维码解析成功\n是否确认关联此影像件?").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            } else
+                //自定义相机录制结束
+                // Received recording or error from MaterialCamera
+                if (requestCode == CAMERA_RQ) {
+                    if (resultCode == RESULT_OK) {
+                        final RecordInfo recordInfo = new RecordInfo();
+                        recordInfo.setAuthor("abc");
+                        long millis = System.currentTimeMillis();
+                        recordInfo.setUpdateTime(new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(new Date(millis)));
+                        recordInfo.setUpdate(millis);
+                        recordInfo.setVideotapePath(data.getData().getPath());
+                        recordInfo.save();
+                        final File file = new File(data.getData().getPath());
+                        DialogUtils.getDialog(this, "影像件录制完成,编号:" + recordInfo.getId() + "\n是否开始关联保单信息?\n取消后可在任务列表查看并操作").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (!TextUtils.isEmpty(local_id)) {
-                                    boolean save = policy.save();
-                                    if (save) {
-                                        RecordInfo recordInfo = DataSupport.find(RecordInfo.class, Long.parseLong(local_id));
-                                        recordInfo.setPolicy(policy);
-                                        save = recordInfo.save();
-                                        if (save) {
-                                            //数据库ID
-                                            PolicyPreviewActivity.start(MainActivity.this, recordInfo.getId());
-                                            Toast.makeText(MainActivity.this, "保单信息关联成功", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(MainActivity.this, "保单信息关联失败", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                }
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                CaptureActivity.start(MainActivity.this, REQUEST_CODE, recordInfo.getId());
                             }
                         }).create().show();
-                    } catch (Exception e) {
-                        Toast.makeText(MainActivity.this, "请确认二维码是否正确:", Toast.LENGTH_SHORT).show();
+                    } else if (data != null) {
+                        Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
+                        if (e != null) {
+                            e.printStackTrace();
+                            Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+                        }
                     }
-                }
-            }
+                } else
+                /**处理二维码扫描结果*/
+                    if (requestCode == MainActivity.REQUEST_CODE && resultCode == RESULT_OK) {
+                        //处理扫描结果（在界面上显示）
+                        if (null != data) {
+                            Bundle bundle = data.getExtras();
+                            if (bundle == null) {
+                                return;
+                            }
+                            try {
+                                String msg = bundle.getString(CaptureActivity.SCAN_MSG);
+                                final String local_id = bundle.getString(CaptureActivity.LOCAL_ID);
+                                final Policy policy = new Gson().fromJson(msg, Policy.class);
+                                DialogUtils.getDialog(MainActivity.this, "二维码解析成功\n是否确认关联此影像件?").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (!TextUtils.isEmpty(local_id)) {
+                                            boolean save = policy.save();
+                                            if (save) {
+                                                RecordInfo recordInfo = DataSupport.find(RecordInfo.class, Long.parseLong(local_id));
+                                                recordInfo.setPolicy(policy);
+                                                save = recordInfo.save();
+                                                if (save) {
+                                                    //数据库ID
+                                                    PolicyPreviewActivity.start(MainActivity.this, recordInfo.getId());
+                                                    Toast.makeText(MainActivity.this, "保单信息关联成功", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(MainActivity.this, "保单信息关联失败", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        }
+                                    }
+                                }).create().show();
+                            } catch (Exception e) {
+                                Toast.makeText(MainActivity.this, "请确认二维码是否正确:", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
     }
 
     /**

@@ -1,6 +1,9 @@
 package com.n22.util;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -12,9 +15,12 @@ import java.io.InputStream;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by zhanxiaolin-n22 on 2017/7/22.
@@ -1125,5 +1131,15 @@ public class FileUtils {
             }
         }
         return true;
+    }
+    //Environment.getExternalStorageDirectory().getPath() + "/VideoRecorderTest/" , "VID_" , ".mp4"
+    public static File makeTempFile(
+            @NonNull Context context, @Nullable String saveDir, String prefix, String extension) {
+        if (saveDir == null) saveDir = context.getExternalCacheDir().getAbsolutePath();
+        final String timeStamp =
+                new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        final File dir = new File(saveDir);
+        dir.mkdirs();
+        return new File(dir, prefix + timeStamp + extension);
     }
 }

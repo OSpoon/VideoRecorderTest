@@ -24,8 +24,7 @@ import android.util.Log;
 public class BeanUtilImpl implements BeanUtil {
     private String jsondata;
     private String signMD5;
-    public static String BASE_URL = "http://112.74.250.71:8001/com.ifp.ipartner/interfaceChannel";// 获取token
-    public static String BASE_URL_OSSUPLOAD = "http://139.196.106.75:8189/com.ifp.ipartner/interfaceChannel";
+    public static String BASE_URL_OSSUPLOAD = "http://" + Config.HOST_IP + "/com.ifp.ipartner/interfaceChannel";
 
     public BeanUtilImpl() {
         init();
