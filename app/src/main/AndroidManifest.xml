@@ -68,6 +68,8 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"/>
         <activity android:name="com.simple.ui.LogDetailActivity" android:screenOrientation="portrait" />
+        <!--更新下载服务-->
+        <service android:name="com.n22.update.service.DownloadService" />
     </application>
 
 </manifest>

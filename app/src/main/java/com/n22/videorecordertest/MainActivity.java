@@ -1,5 +1,7 @@
 package com.n22.videorecordertest;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StatFs;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -39,10 +42,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "MainActivity";
     private static final int CAMERA_RQ = 0x998;
     private static final int REQUEST_CODE = 0x997;
+    private static final long ERROR = -1;
     //第三方双录sdk
-    private String appid = "RDkzMDk0QzEtQUFFNC00MzY5LTg5MDMtQzhBRDBFNTM2MDlE";//测试用appid
-    private String appkey = "MEQyNTNBMEQtMDlCMi00MTJFLUI0RDctREY4QjgzQUE0QjY1";//测试用appkey
-    private String accessKey = "QkJERDUxMDQtQTg4NC00QzIwLUIxOEQtNUI5NUVDRENGMTc3";//测试用accessKey
+//    private String appid = "RDkzMDk0QzEtQUFFNC00MzY5LTg5MDMtQzhBRDBFNTM2MDlE";//测试用appid
+//    private String appkey = "MEQyNTNBMEQtMDlCMi00MTJFLUI0RDctREY4QjgzQUE0QjY1";//测试用appkey
+//    private String accessKey = "QkJERDUxMDQtQTg4NC00QzIwLUIxOEQtNUI5NUVDRENGMTc3";//测试用accessKey
+
+    private String appid = "RTI4ODM3NjgtREZGOC00OENBLTg0QUEtRjk5RTE3N0QwMUE2";//测试用appid
+    private String appkey = "MURBOENDMDAtMTM4NS00RjZGLUFFNkUtODVFN0NBMkE3OEU4";//测试用appkey
+    private String accessKey = "QzVCRTU5Q0EtMTIwMC00QzU5LUE4RjQtN0RGQjFBQTlDRTA1";//测试用accessKey
 
     private DoubleInoutSDKKey sdkKey;
     private DoubleInput doubileInput;
@@ -84,10 +92,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, TabPageActivity.class));
                 break;
             case R.id.new_layout:
-                materialCamera.start(CAMERA_RQ); // Starts the camera activity, the result will be sent back to the current Activitys
+                isPass(new OnPassListener() {
+                    @Override
+                    public void onPass() {
+                        materialCamera.start(CAMERA_RQ); // Starts the camera activity, the result will be sent back to the current Activitys
+                    }
+                });
                 break;
             case R.id.new_layout2:
-                recordVideo();
+                isPass(new OnPassListener() {
+                    @Override
+                    public void onPass() {
+                        recordVideo();
+                    }
+                });
                 break;
             case R.id.new_layout3:
                 boolean audio = startAudio();
@@ -155,9 +173,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             videopath = "VideoRecorderTest/video/" + "video_" + DateUtil.getCurrentTime("yyyy_MM_dd_HH_mm_ss");
             VideoRecorderOptions options = new VideoRecorderOptions(videopath);
             options.setVideoMaxTime(60);//录制最大时长
-            options.setmWidth(1080);
+            options.setmWidth(1280);
             options.setmHeight(720);
-            options.setFrame(18);
+//            options.setFrame(18);
             options.setFrameRate(30);
             options.setVideoEncodingBitRate(1024);
             options.setAudioEncodingBitRate(256000);
@@ -168,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             options.setHaveWaterMark(true);
             Drawable drawable = getResources().getDrawable(R.mipmap.icon_watermark);
             options.setWaterMarkPicture(ImageUtils.drawable2Bitmap(drawable));
+
             doubileInput.recordVideo(options, sdkKey);
         }
     }
@@ -309,6 +328,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+    }
+
+    private void isPass(OnPassListener onPassListener) {
+        long availableSize = getAvailableExternalMemorySize();
+        if (availableSize <= 1024L * 1024 * 1024 * 1) {
+            showWarn();
+        } else {
+            if (onPassListener != null)
+                onPassListener.onPass();
+        }
+    }
+
+    private void showWarn() {
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        dialog.setMessage("您的手机存储空间小于1G，请清理存储后重试");
+        dialog.setButton(Dialog.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        dialog.show();
+    }
+
+    /**
+     * 获取SDCARD剩余存储空间
+     *
+     * @return
+     */
+    public static long getAvailableExternalMemorySize() {
+        if (externalMemoryAvailable()) {
+            File path = Environment.getExternalStorageDirectory();
+            StatFs stat = new StatFs(path.getPath());
+            long blockSize = stat.getBlockSize();
+            long availableBlocks = stat.getAvailableBlocks();
+            return availableBlocks * blockSize;
+        } else {
+            return ERROR;
+        }
+    }
+
+    /**
+     * SDCARD是否存
+     */
+    public static boolean externalMemoryAvailable() {
+        return android.os.Environment.getExternalStorageState().equals(
+                android.os.Environment.MEDIA_MOUNTED);
+    }
+
+    interface OnPassListener {
+        void onPass();
     }
 }
 

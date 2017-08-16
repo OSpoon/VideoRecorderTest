@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.n22.bean.Policy;
 import com.n22.bean.RecordInfo;
+import com.n22.update.UpdateManager;
 
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
@@ -37,7 +38,6 @@ import java.util.Date;
 public class LoginActivity extends AppCompatActivity {
 
     private static final int PERMISSION_CODE = 1;
-    private static final long ERROR = -1;
 
     private TextView nameView;
     private TextView pwdView;
@@ -94,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
 //            }
 //        });
 //        askPermission();
+        new UpdateManager(this,true).checkUpdate();
     }
 
     @Nullable
@@ -129,7 +130,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
             if (pers.size() == 0) {
-                toMain();
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
             } else {
                 String[] asks = new String[pers.size()];
                 pers.toArray(asks);
@@ -137,7 +139,8 @@ public class LoginActivity extends AppCompatActivity {
                 this.requestPermissions(asks, PERMISSION_CODE);
             }
         } else {
-            toMain();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
         }
     }
 
@@ -152,54 +155,8 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
         }
-        toMain();
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
-    private void toMain() {
-        long availableSize = getAvailableExternalMemorySize();
-        if (availableSize <= 1024L * 1024 * 1024 * 1) {
-            showWarn();
-        } else {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
-    }
-
-    private void showWarn() {
-        AlertDialog dialog = new AlertDialog.Builder(this).create();
-        dialog.setMessage("您的手机存储空间小于1G，请清理存储后重试");
-        dialog.setButton(Dialog.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        dialog.show();
-    }
-
-    /**
-     * 获取SDCARD剩余存储空间
-     *
-     * @return
-     */
-    public static long getAvailableExternalMemorySize() {
-        if (externalMemoryAvailable()) {
-            File path = Environment.getExternalStorageDirectory();
-            StatFs stat = new StatFs(path.getPath());
-            long blockSize = stat.getBlockSize();
-            long availableBlocks = stat.getAvailableBlocks();
-            return availableBlocks * blockSize;
-        } else {
-            return ERROR;
-        }
-    }
-
-    /**
-     * SDCARD是否存
-     */
-    public static boolean externalMemoryAvailable() {
-        return android.os.Environment.getExternalStorageState().equals(
-                android.os.Environment.MEDIA_MOUNTED);
-    }
 }
